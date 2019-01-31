@@ -2,6 +2,8 @@ import boto3
 import requests as req
 import pandas as pd
 import time
+import os
+
 
 def read_game_log(filename):
 
@@ -17,6 +19,7 @@ def generate_game_id(x):
   teamstr = x.Away.lower() + 'mlb_' + x.Home.lower() + 'mlb_1'
 
   return datestr + '_' + teamstr
+
 
 ## http://gd2.mlb.com/components/game/mlb/year_2018/month_04/day_01/gid_2018_04_01_minmlb_balmlb_1/game.xml
 def parse_game_log(df):
@@ -65,3 +68,15 @@ def upload_data(game_id, game_data, inning_data, s3):
 def download_and_upload(x, s3, sleep=2.5):
   (game_id, game_data, inning_data) = download_all_data(x, sleep=sleep)
   upload_data(game_id, game_data, inning_data, s3)
+
+if __name__ == "__main__":
+    sess = boto3.Session(
+        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID', 'blah'),
+        aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY', 'secret'),
+        region_name='us-west-1'
+    )
+    s3 = sess.resource('s3')
+
+    df = read_game_log("../data/GL2018_simplified.txt")
+    df = parse_game_log(df)
+    df.apply(lambda x: download_and_upload(x, s3))
