@@ -66,8 +66,10 @@ def upload_data(game_id, game_data, inning_data, s3):
 
 
 def download_and_upload(x, s3, sleep=2.5):
+  print(x.game_id)
   (game_id, game_data, inning_data) = download_all_data(x, sleep=sleep)
   upload_data(game_id, game_data, inning_data, s3)
+
 
 if __name__ == "__main__":
     sess = boto3.Session(
@@ -79,4 +81,4 @@ if __name__ == "__main__":
 
     df = read_game_log("../data/GL2018_simplified.txt")
     df = parse_game_log(df)
-    df.apply(lambda x: download_and_upload(x, s3))
+    df.apply(lambda x: download_and_upload(x, s3), axis=1)
