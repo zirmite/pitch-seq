@@ -1,6 +1,33 @@
 import boto3
 import xml.etree.ElementTree as ET
 
+# - game
+#   - innings
+#     - inning
+#       - top
+#         - atbat
+#           - pitch
+#           - pitch
+#           - pitch
+#       - bottom
+
+# game_id
+# stadium
+# home team
+# away team
+# start_time
+# weather(?)
+# inning_id
+# inning_number
+# half_inning
+# atbat_id
+# pitcher
+# catcher
+# batter
+# pitch
+# pitch of sequence
+# pitch attributes
+
 
 class Game:
   def __init__(self, xmlfile):
