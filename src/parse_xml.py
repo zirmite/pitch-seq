@@ -26,6 +26,6 @@ class AtBat:
   def __init__(self, xmlatbat):
     self.
 
-def parse_xml(inning_file):
 
+def parse_xml(inning_file):
   game = ET.parse(inning_file).getroot()
